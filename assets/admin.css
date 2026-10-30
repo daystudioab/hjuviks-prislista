@@ -1,0 +1,246 @@
+/* Hjuviks Marina – Prislista (admin) */
+.hjp-wrap {
+	max-width: 980px;
+	--hjp-ink: #10303A;
+	--hjp-sea: #CFE3EA;
+	--hjp-land: #E9D9A8;
+	--hjp-muted: #56717B;
+	--hjp-line: #DCE5E8;
+}
+
+.hjp-wrap .hjp-title {
+	font-size: 28px;
+	font-weight: 700;
+	color: var(--hjp-ink);
+	margin-bottom: 4px;
+}
+
+.hjp-intro {
+	font-size: 14px;
+	color: var(--hjp-muted);
+	max-width: 70ch;
+	margin: 0 0 24px;
+}
+
+.hjp-card,
+.hjp-group {
+	background: #fff;
+	border: 1px solid var(--hjp-line);
+	border-radius: 8px;
+	padding: 20px 24px;
+	margin: 0 0 20px;
+}
+
+.hjp-settings {
+	display: grid;
+	grid-template-columns: 2fr 1fr 110px;
+	gap: 16px 20px;
+	align-items: end;
+}
+
+.hjp-field label {
+	display: block;
+	font-weight: 600;
+	color: var(--hjp-ink);
+	margin-bottom: 6px;
+}
+
+.hjp-field input[type="text"],
+.hjp-field textarea {
+	width: 100%;
+}
+
+.hjp-field-check {
+	grid-column: 1 / -1;
+}
+
+.hjp-field-check label {
+	font-weight: 400;
+	margin: 0;
+}
+
+.hjp-inline input {
+	width: 70px;
+}
+
+.hjp-group {
+	border-top: 4px solid var(--hjp-ink);
+}
+
+.hjp-group-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 14px;
+}
+
+.hjp-group-handle,
+.hjp-handle {
+	cursor: move;
+	color: #9AAFB6;
+}
+
+.hjp-group-title {
+	flex: 1;
+	font-size: 18px !important;
+	font-weight: 600;
+	color: var(--hjp-ink);
+	border-color: transparent !important;
+	box-shadow: none !important;
+	background: transparent;
+	padding: 4px 8px !important;
+}
+
+.hjp-group-title:hover,
+.hjp-group-title:focus {
+	border-color: var(--hjp-line) !important;
+	background: #fff;
+}
+
+.hjp-remove-group {
+	color: #B32D2E !important;
+	text-decoration: none !important;
+	font-size: 13px;
+}
+
+.hjp-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 12px;
+}
+
+.hjp-table th {
+	text-align: left;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--hjp-muted);
+	padding: 0 8px 8px;
+	border-bottom: 1px solid var(--hjp-line);
+}
+
+.hjp-table td {
+	padding: 6px 8px;
+	border-bottom: 1px solid #F0F4F5;
+	vertical-align: middle;
+}
+
+.hjp-table td:first-child,
+.hjp-table th:first-child {
+	width: 24px;
+	padding-left: 0;
+}
+
+.hjp-table input[type="text"] {
+	width: 100%;
+}
+
+.hjp-namn {
+	font-weight: 600;
+}
+
+.hjp-pris-cell {
+	white-space: nowrap;
+	width: 150px;
+}
+
+.hjp-pris {
+	width: 110px;
+	text-align: right;
+}
+
+.hjp-suffix {
+	margin-left: 6px;
+	color: var(--hjp-muted);
+}
+
+.hjp-inkl {
+	white-space: nowrap;
+	width: 110px;
+	font-weight: 600;
+	color: var(--hjp-ink);
+	font-variant-numeric: tabular-nums;
+}
+
+.hjp-actions {
+	width: 32px;
+	text-align: right;
+}
+
+.hjp-remove-row {
+	color: #9AAFB6 !important;
+}
+
+.hjp-remove-row:hover {
+	color: #B32D2E !important;
+}
+
+.hjp-add-row .dashicons,
+.hjp-add-group .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	vertical-align: text-bottom;
+}
+
+.hjp-add-group {
+	margin: 0 0 28px !important;
+}
+
+.hjp-row-placeholder td {
+	height: 40px;
+	background: var(--hjp-sea);
+}
+
+.hjp-group-placeholder {
+	height: 120px;
+	border: 2px dashed var(--hjp-sea);
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.hjp-savebar {
+	position: sticky;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 16px 0;
+	background: #F0F0F1;
+	border-top: 1px solid var(--hjp-line);
+	z-index: 10;
+}
+
+.hjp-updated {
+	color: var(--hjp-muted);
+}
+
+@media (max-width: 782px) {
+	.hjp-settings {
+		grid-template-columns: 1fr;
+	}
+
+	.hjp-table thead {
+		display: none;
+	}
+
+	.hjp-table tr {
+		display: grid;
+		grid-template-columns: 24px 1fr 32px;
+		gap: 6px;
+		padding: 10px 0;
+		border-bottom: 1px solid var(--hjp-line);
+	}
+
+	.hjp-table td {
+		border: 0;
+		padding: 0;
+		width: auto !important;
+	}
+
+	.hjp-table td:nth-child(2) { grid-column: 2; grid-row: 1; }
+	.hjp-table td:nth-child(3) { grid-column: 2; grid-row: 2; }
+	.hjp-table td:nth-child(4) { grid-column: 2; grid-row: 3; }
+	.hjp-table td:nth-child(5) { grid-column: 2; grid-row: 4; }
+	.hjp-table td:nth-child(6) { grid-column: 3; grid-row: 1; }
+	.hjp-table td:first-child { grid-row: 1; }
+}

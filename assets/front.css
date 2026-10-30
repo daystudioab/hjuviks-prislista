@@ -1,0 +1,169 @@
+/* Hjuviks Marina – Prislista (webbplats)
+ * Använder sajtens Elementor-variabler med reservvärden. */
+.hjp-prislista {
+	--hjp-ink: var(--djupvatten, #10303A);
+	--hjp-muted: var(--dimma, #56717B);
+	--hjp-accent: var(--prick, #B8382C);
+	--hjp-head: var(--font-rubrik, 'Familjen Grotesk'), system-ui, sans-serif;
+	--hjp-body: var(--font-brodtext, 'Newsreader'), Georgia, serif;
+	display: block;
+	width: 100%;
+	color: var(--hjp-ink);
+	font-family: var(--hjp-body);
+}
+
+.hjp-prislista .hjp-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px 24px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid var(--hjp-ink);
+}
+
+.hjp-prislista .hjp-head-title {
+	font-family: var(--hjp-head);
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
+}
+
+.hjp-prislista .hjp-head-season {
+	font-family: var(--hjp-head);
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--hjp-muted);
+}
+
+.hjp-prislista .hjp-grupp {
+	display: block;
+	margin: 0;
+	padding: 36px 0 0;
+}
+
+.hjp-prislista .hjp-grupp-titel {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--hjp-head);
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--hjp-muted);
+	margin-bottom: 4px;
+}
+
+.hjp-prislista .hjp-grupp-titel::before {
+	content: "";
+	width: 8px;
+	height: 8px;
+	background: var(--hjp-accent);
+	flex: none;
+}
+
+.hjp-prislista .hjp-tabell {
+	width: 100%;
+	border-collapse: collapse;
+	border: 0;
+	margin: 0;
+	background: transparent;
+	font-size: inherit;
+}
+
+.hjp-prislista .hjp-tabell th,
+.hjp-prislista .hjp-tabell td {
+	border: 0;
+	border-bottom: 1px solid rgba(16, 48, 58, 0.16);
+	padding: 18px 0;
+	background: transparent;
+	text-align: left;
+	vertical-align: baseline;
+}
+
+.hjp-prislista .hjp-namn {
+	font-family: var(--hjp-head);
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	width: 42%;
+	padding-right: 16px;
+}
+
+.hjp-prislista .hjp-period {
+	font-size: 16px;
+	color: var(--hjp-muted);
+	padding-right: 16px;
+}
+
+.hjp-prislista .hjp-pris {
+	text-align: right !important;
+	white-space: nowrap;
+}
+
+.hjp-prislista .hjp-inkl {
+	display: block;
+	font-family: var(--hjp-head);
+	font-size: 20px;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.01em;
+}
+
+.hjp-prislista .hjp-ex {
+	display: block;
+	font-size: 14px;
+	color: var(--hjp-muted);
+	font-variant-numeric: tabular-nums;
+	margin-top: 2px;
+}
+
+.hjp-prislista .hjp-noter {
+	list-style: none;
+	margin: 28px 0 0;
+	padding: 0;
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--hjp-muted);
+}
+
+.hjp-prislista .hjp-noter li {
+	margin: 0 0 6px;
+	padding: 0;
+}
+
+.hjp-prislista .hjp-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+	.hjp-prislista .hjp-tabell,
+	.hjp-prislista .hjp-tabell tbody {
+		display: block;
+	}
+
+	.hjp-prislista .hjp-tabell tr {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 2px 16px;
+		padding: 16px 0;
+		border-bottom: 1px solid rgba(16, 48, 58, 0.16);
+	}
+
+	.hjp-prislista .hjp-tabell th,
+	.hjp-prislista .hjp-tabell td {
+		border: 0;
+		padding: 0;
+		width: auto;
+	}
+
+	.hjp-prislista .hjp-namn { grid-column: 1; grid-row: 1; font-size: 18px; }
+	.hjp-prislista .hjp-period { grid-column: 1; grid-row: 2; font-size: 15px; }
+	.hjp-prislista .hjp-pris { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+	.hjp-prislista .hjp-inkl { font-size: 18px; }
+}
