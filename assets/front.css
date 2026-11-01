@@ -1,5 +1,5 @@
 /* Hjuviks Marina – Prislista (webbplats)
- * Sajtens typsnitt: Hedvig Letters Serif för all text. Benämningarna (Y-bom …) i vikt 500, samma storlek som priset. */
+ * Sajtens typsnitt: Hedvig Letters Serif för all text, gruppnamnen i Ex som heroknappen. Benämningarna (Y-bom …) i vikt 500, samma storlek som priset. */
 .hjp-prislista {
 	--hjp-ink: var(--djupvatten, #10303A);
 	--hjp-muted: var(--dimma, #56717B);
@@ -42,22 +42,15 @@
 }
 
 .hjp-prislista .hjp-grupp-titel {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-family: var(--hjp-body);
-	font-size: 15px;
-	font-weight: 400;
-	color: var(--hjp-muted);
+	/* Samma textstil som primärknappen i heron. */
+	display: block;
+	font-family: "Ex", Georgia, serif;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--marin, #0B1F4D);
 	margin-bottom: 4px;
-}
-
-.hjp-prislista .hjp-grupp-titel::before {
-	content: "";
-	width: 8px;
-	height: 8px;
-	background: var(--hjp-accent);
-	flex: none;
 }
 
 .hjp-prislista .hjp-tabell {
@@ -72,7 +65,7 @@
 .hjp-prislista .hjp-tabell th,
 .hjp-prislista .hjp-tabell td {
 	border: 0;
-	border-bottom: 1px solid rgba(16, 48, 58, 0.16);
+	border-bottom: 1px solid rgba(16, 48, 58, 0.08);
 	padding: 18px 0;
 	background: transparent;
 	text-align: left;
@@ -150,7 +143,7 @@
 		grid-template-columns: 1fr auto;
 		gap: 2px 16px;
 		padding: 16px 0;
-		border-bottom: 1px solid rgba(16, 48, 58, 0.16);
+		border-bottom: 1px solid rgba(16, 48, 58, 0.08);
 	}
 
 	.hjp-prislista .hjp-tabell th,
