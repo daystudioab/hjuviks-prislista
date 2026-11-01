@@ -38,7 +38,11 @@
 .hjp-prislista .hjp-grupp {
 	display: block;
 	margin: 0;
-	padding: 36px 0 0;
+	padding: 52px 0 0;
+}
+
+.hjp-prislista .hjp-grupp:first-of-type {
+	padding-top: 40px;
 }
 
 .hjp-prislista .hjp-grupp-titel {
@@ -50,7 +54,9 @@
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: var(--marin, #0B1F4D);
-	margin-bottom: 4px;
+	padding-bottom: 12px;
+	border-bottom: 2px solid var(--marin, #0B1F4D);
+	margin-bottom: 10px;
 }
 
 .hjp-prislista .hjp-tabell {
