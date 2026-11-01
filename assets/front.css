@@ -1,10 +1,12 @@
 /* Hjuviks Marina – Prislista (webbplats)
- * Sajtens typsnitt: Hedvig Letters Serif för all text. Benämningarna (Y-bom …) i vikt 500, samma storlek som priset. */
+ * Sajtens typsnitt: Hedvig Letters Serif för all text utom priserna, som står i Ex med old style-siffror.
+ * Benämningarna (Y-bom …) i vikt 500, samma storlek som priset. */
 .hjp-prislista {
 	--hjp-ink: var(--djupvatten, #10303A);
 	--hjp-muted: var(--dimma, #56717B);
 	--hjp-accent: var(--prick, #B8382C);
 	--hjp-body: "Hedvig Letters Serif", Georgia, serif;
+	--hjp-siffror: "Ex", Georgia, serif;
 	display: block;
 	width: 100%;
 	color: var(--hjp-ink);
@@ -101,18 +103,20 @@
 
 .hjp-prislista .hjp-inkl {
 	display: block;
-	font-family: var(--hjp-body);
+	font-family: var(--hjp-siffror);
 	font-size: 20px;
-	font-weight: 400;
-	font-variant-numeric: tabular-nums;
+	font-weight: 500;
+	font-variant-numeric: oldstyle-nums tabular-nums;
 	letter-spacing: -0.01em;
 }
 
 .hjp-prislista .hjp-ex {
 	display: block;
+	font-family: var(--hjp-siffror);
 	font-size: 14px;
+	font-weight: 500;
 	color: var(--hjp-muted);
-	font-variant-numeric: tabular-nums;
+	font-variant-numeric: oldstyle-nums tabular-nums;
 	margin-top: 2px;
 }
 
