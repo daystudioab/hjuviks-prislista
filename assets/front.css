@@ -46,17 +46,19 @@
 }
 
 .hjp-prislista .hjp-grupp-titel {
-	/* Samma textstil som primärknappen i heron. */
-	display: block;
+	/* Samma textstil som primärknappen i heron. Linjen ligger bara under ordet:
+	   inline-block, och negativ högermarginal tar bort spärrningen efter sista bokstaven. */
+	display: inline-block;
+	margin-right: -0.14em;
 	font-family: "Ex", Georgia, serif;
 	font-size: 18px;
 	font-weight: 700;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: var(--marin, #0B1F4D);
-	padding-bottom: 12px;
+	padding-bottom: 2px;
 	border-bottom: 2px solid var(--marin, #0B1F4D);
-	margin-bottom: 10px;
+	margin-bottom: 14px;
 }
 
 .hjp-prislista .hjp-tabell {
