@@ -41,7 +41,11 @@
 	padding: 52px 0 0;
 }
 
-.hjp-prislista .hjp-grupp:first-of-type {
+.hjp-prislista .hjp-grupp:first-child {
+	padding-top: 0;
+}
+
+.hjp-prislista .hjp-head + .hjp-grupp {
 	padding-top: 40px;
 }
 
@@ -56,7 +60,7 @@
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: var(--marin, #0B1F4D);
-	padding-bottom: 2px;
+	padding-bottom: 1px;
 	border-bottom: 2px solid var(--marin, #0B1F4D);
 	margin-bottom: 14px;
 }
