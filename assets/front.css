@@ -170,3 +170,308 @@
 	.hjp-prislista .hjp-pris { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
 	.hjp-prislista .hjp-inkl { font-size: 18px; }
 }
+
+/* -------------------------------------------------------------------------
+ * [hjuviks_prislista stil="flikar"] – en flik per grupp och momsreglage.
+ * Följer omgivningens typsnitt. Färgerna går att byta med variablerna nedan.
+ * ---------------------------------------------------------------------- */
+.hjp-prislista.hjp-flikar {
+	--hjp-f-ink: #0F2A5C;
+	--hjp-f-text: #16202E;
+	--hjp-f-muted: #5B6573;
+	--hjp-f-line: #D9DEDB;
+	--hjp-f-border: #C7CEC9;
+	--hjp-f-bg: #FFFFFF;
+	font-family: inherit;
+	color: var(--hjp-f-text);
+	line-height: 1.4;
+}
+
+.hjp-flikar .hjp-f-topp {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.hjp-flikar .hjp-f-flikar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.hjp-flikar .hjp-f-flik,
+.hjp-flikar .hjp-f-moms button {
+	margin: 0;
+	font-family: inherit;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.hjp-flikar .hjp-f-flik {
+	min-height: 48px;
+	padding: 0 22px;
+	border: 2px solid var(--hjp-f-border);
+	border-radius: 6px;
+	background: var(--hjp-f-bg);
+	color: var(--hjp-f-ink);
+	font-size: 17px;
+}
+
+.hjp-flikar .hjp-f-flik:hover {
+	border-color: var(--hjp-f-ink);
+}
+
+.hjp-flikar .hjp-f-flik[aria-selected="true"] {
+	background: var(--hjp-f-ink);
+	border-color: var(--hjp-f-ink);
+	color: #FFFFFF;
+}
+
+.hjp-flikar .hjp-f-moms {
+	display: inline-flex;
+	gap: 4px;
+	padding: 4px;
+	border: 1px solid var(--hjp-f-border);
+	border-radius: 999px;
+	background: var(--hjp-f-bg);
+}
+
+.hjp-flikar .hjp-f-moms button {
+	min-height: 40px;
+	padding: 0 18px;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--hjp-f-ink);
+	font-size: 15px;
+}
+
+.hjp-flikar .hjp-f-moms button[aria-pressed="true"] {
+	background: var(--hjp-f-ink);
+	color: #FFFFFF;
+}
+
+.hjp-flikar .hjp-f-flik:focus-visible,
+.hjp-flikar .hjp-f-moms button:focus-visible {
+	outline: 3px solid #9B2C1F;
+	outline-offset: 2px;
+}
+
+.hjp-flikar .hjp-f-panel {
+	display: block;
+	padding: 8px clamp(16px, 3vw, 36px) 12px;
+	border-radius: 6px;
+	background: var(--hjp-f-bg);
+}
+
+.hjp-flikar .hjp-f-panel + .hjp-f-panel {
+	margin-top: 16px;
+}
+
+.hjp-flikar .hjp-f-panel[hidden] {
+	display: none;
+}
+
+.hjp-flikar .hjp-f-panelhuvud {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 4px 16px;
+	padding: 16px 0 12px;
+	border-bottom: 2px solid var(--hjp-f-ink);
+}
+
+.hjp-flikar .hjp-f-grupp {
+	margin: 0;
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0;
+	line-height: 1.3;
+	color: var(--hjp-f-ink);
+}
+
+.hjp-flikar .hjp-f-momstext {
+	font-size: 15px;
+	color: var(--hjp-f-muted);
+}
+
+.hjp-flikar .hjp-f-rader {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.hjp-flikar .hjp-f-rad {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	margin: 0;
+	padding: 18px 0;
+	border-bottom: 1px solid var(--hjp-f-line);
+}
+
+.hjp-flikar .hjp-f-rad:last-child {
+	border-bottom: 0;
+}
+
+.hjp-flikar .hjp-f-namn {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 1.25;
+	color: var(--hjp-f-ink);
+}
+
+.hjp-flikar .hjp-f-period {
+	font-size: 15px;
+	font-weight: 400;
+	color: var(--hjp-f-muted);
+}
+
+.hjp-flikar .hjp-f-pris {
+	font-size: 26px;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.hjp-flikar .hjp-f-exkl {
+	display: block;
+	font-size: 15px;
+	font-weight: 400;
+	color: var(--hjp-f-muted);
+}
+
+.hjp-flikar.hjp-aktiv .hjp-f-exkl,
+.hjp-flikar.hjp-aktiv .hjp-f-grupp {
+	display: none;
+}
+
+.hjp-flikar.hjp-aktiv .hjp-f-panelhuvud {
+	justify-content: flex-end;
+}
+
+.hjp-flikar.hjp-aktiv[data-moms="exkl"] .hjp-f-inkl,
+.hjp-flikar.hjp-aktiv[data-moms="exkl"] .hjp-f-exkl-text {
+	display: none;
+}
+
+.hjp-flikar.hjp-aktiv[data-moms="exkl"] .hjp-f-exkl {
+	display: inline;
+	font: inherit;
+	color: inherit;
+}
+
+.hjp-flikar:not(.hjp-aktiv) .hjp-f-topp {
+	display: none;
+}
+
+.hjp-flikar .hjp-f-noter {
+	list-style: none;
+	margin: 16px 0 0;
+	padding: 0;
+	font-size: 15px;
+	line-height: 1.5;
+	color: var(--hjp-f-text);
+}
+
+.hjp-flikar .hjp-f-noter li {
+	margin: 0 0 4px;
+}
+
+@media (max-width: 767px) {
+	.hjp-flikar .hjp-f-flikar {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		margin-right: -20px;
+		padding-right: 20px;
+		scrollbar-width: none;
+	}
+
+	.hjp-flikar .hjp-f-flik {
+		flex: none;
+		min-height: 44px;
+		padding: 0 16px;
+		font-size: 16px;
+	}
+
+	.hjp-flikar .hjp-f-moms {
+		display: flex;
+		width: 100%;
+	}
+
+	.hjp-flikar .hjp-f-moms button {
+		flex: 1;
+		padding: 0 10px;
+		white-space: nowrap;
+	}
+
+	.hjp-flikar .hjp-f-rad {
+		padding: 14px 0;
+	}
+
+	.hjp-flikar .hjp-f-namn {
+		font-size: 18px;
+	}
+
+	.hjp-flikar .hjp-f-pris {
+		font-size: 20px;
+	}
+}
+
+/* [hjuviks_aktuellt] – vad som gäller just nu och nästa datum. */
+.hjp-aktuellt {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+	gap: 16px 28px;
+	padding: 22px 24px;
+	border-radius: 6px;
+	background: var(--hjp-akt-bg, #9B2C1F);
+	color: var(--hjp-akt-text, #FFFFFF);
+	font-family: inherit;
+	line-height: 1.3;
+}
+
+.hjp-aktuellt .hjp-akt-del {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.hjp-aktuellt .hjp-akt-etikett,
+.hjp-aktuellt .hjp-akt-text {
+	font-size: 15px;
+}
+
+.hjp-aktuellt .hjp-akt-rubrik {
+	font-size: 26px;
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+@media (max-width: 767px) {
+	.hjp-aktuellt {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		padding: 16px 18px;
+	}
+
+	.hjp-aktuellt .hjp-akt-rubrik {
+		font-size: 20px;
+	}
+
+	.hjp-aktuellt .hjp-akt-etikett,
+	.hjp-aktuellt .hjp-akt-text {
+		font-size: 13px;
+	}
+}

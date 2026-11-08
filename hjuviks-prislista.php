@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Hjuviks Marina – Prislista
- * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista].
- * Version: 1.2.8
+ * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
+ * Version: 1.3.0
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.2.8' );
+define( 'HJP_VERSION', '1.3.0' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -307,6 +307,7 @@ add_action( 'admin_post_hjp_save', function () {
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_register_style( 'hjp-front', HJP_URL . 'assets/front.css', array(), HJP_VERSION );
+	wp_register_script( 'hjp-flikar', HJP_URL . 'assets/flikar.js', array(), HJP_VERSION, true );
 } );
 
 /**
@@ -320,6 +321,7 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 			'grupp'  => '',
 			'rubrik' => 'ja',
 			'noter'  => 'ja',
+			'stil'   => '',
 		),
 		$atts,
 		'hjuviks_prislista'
@@ -336,6 +338,10 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 		$grupper = array_filter( $grupper, function ( $grupp ) use ( $atts ) {
 			return 0 === strcasecmp( trim( $grupp['titel'] ), trim( $atts['grupp'] ) );
 		} );
+	}
+
+	if ( 'flikar' === $atts['stil'] ) {
+		return hjp_render_flikar( $data, $grupper, $atts );
 	}
 
 	ob_start();
@@ -400,24 +406,151 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 } );
 
 /**
+ * [hjuviks_prislista stil="flikar"] – en flik per grupp och ett reglage för pris med eller utan moms.
+ * Utan JavaScript visas alla grupper efter varandra med båda priserna.
+ */
+function hjp_render_flikar( $data, $grupper, $atts ) {
+	static $nummer = 0;
+	$nummer++;
+	$bas     = 'hjp-f' . $nummer;
+	$moms    = (float) $data['moms'];
+	$exmoms  = ! empty( $data['visa_exmoms'] );
+	$grupper = array_values( $grupper );
+	$procent = rtrim( rtrim( number_format( $moms, 2, ',', '' ), '0' ), ',' );
+
+	wp_enqueue_style( 'hjp-front' );
+	wp_enqueue_script( 'hjp-flikar' );
+
+	ob_start();
+	?>
+	<div class="hjp-prislista hjp-flikar" data-moms="inkl">
+		<div class="hjp-f-topp">
+			<div class="hjp-f-flikar" role="tablist" aria-label="Prisgrupper">
+				<?php foreach ( $grupper as $i => $grupp ) : ?>
+					<button type="button" class="hjp-f-flik" role="tab" id="<?php echo esc_attr( $bas . '-flik-' . $i ); ?>" aria-controls="<?php echo esc_attr( $bas . '-panel-' . $i ); ?>" aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>"<?php echo 0 === $i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $grupp['titel'] ); ?></button>
+				<?php endforeach; ?>
+			</div>
+			<?php if ( $exmoms ) : ?>
+				<div class="hjp-f-moms" role="group" aria-label="Visa priser">
+					<button type="button" data-hjp-moms="inkl" aria-pressed="true">Inklusive moms</button>
+					<button type="button" data-hjp-moms="exkl" aria-pressed="false">Exklusive moms</button>
+				</div>
+			<?php endif; ?>
+		</div>
+		<?php foreach ( $grupper as $i => $grupp ) : ?>
+			<section class="hjp-f-panel" role="tabpanel" id="<?php echo esc_attr( $bas . '-panel-' . $i ); ?>" aria-labelledby="<?php echo esc_attr( $bas . '-flik-' . $i ); ?>">
+				<div class="hjp-f-panelhuvud">
+					<h3 class="hjp-f-grupp"><?php echo esc_html( $grupp['titel'] ); ?><?php echo $data['sasong'] ? ' ' . esc_html( $data['sasong'] ) : ''; ?></h3>
+					<span class="hjp-f-momstext" data-inkl="<?php echo esc_attr( 'Inklusive ' . $procent . ' % moms' ); ?>" data-exkl="Exklusive moms">Inklusive <?php echo esc_html( $procent ); ?>&nbsp;% moms</span>
+				</div>
+				<ul class="hjp-f-rader">
+					<?php foreach ( $grupp['rader'] as $row ) : ?>
+						<li class="hjp-f-rad">
+							<span class="hjp-f-namn">
+								<?php echo esc_html( $row['namn'] ); ?>
+								<?php if ( ! empty( $row['period'] ) ) : ?>
+									<span class="hjp-f-period"><?php echo esc_html( $row['period'] ); ?></span>
+								<?php endif; ?>
+							</span>
+							<span class="hjp-f-pris">
+								<?php if ( '' !== $row['pris'] ) : ?>
+									<span class="hjp-f-inkl"><?php echo esc_html( hjp_format_kr( round( (float) $row['pris'] * ( 1 + $moms / 100 ) ) ) ); ?></span>
+									<?php if ( $exmoms ) : ?>
+										<span class="hjp-f-exkl"><?php echo esc_html( hjp_format_kr( $row['pris'] ) ); ?><span class="hjp-f-exkl-text"> exkl. moms</span></span>
+									<?php endif; ?>
+								<?php else : ?>
+									<span class="hjp-f-inkl">Pris på förfrågan</span>
+								<?php endif; ?>
+							</span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</section>
+		<?php endforeach; ?>
+		<?php
+		$noter = array_filter( array_map( 'trim', explode( "\n", (string) $data['noter'] ) ) );
+		if ( 'nej' !== $atts['noter'] && $noter ) :
+			?>
+			<ul class="hjp-f-noter">
+				<?php foreach ( $noter as $not ) : ?>
+					<li><?php echo esc_html( $not ); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+	</div>
+	<?php
+	return trim( ob_get_clean() );
+}
+
+/**
+ * [hjuviks_aktuellt] – vad som gäller i hamnen just nu och nästa datum, efter dagens datum
+ * i sajtens tidszon. Säsong 1 april–31 oktober, vinterplatsavtal senast 1 oktober,
+ * vinterplats 1 november–31 mars.
+ */
+function hjp_aktuellt_lage( $manad, $dag ) {
+	if ( $manad >= 11 || $manad <= 3 ) {
+		return array(
+			'nu'      => 'Vintersäsong',
+			'nu_text' => '1 november till 31 mars',
+			'nasta'   => '1 april',
+			'n_text'  => 'Säsongen börjar',
+		);
+	}
+	if ( $manad < 10 || ( 10 === $manad && 1 === $dag ) ) {
+		return array(
+			'nu'      => 'Båtsäsong',
+			'nu_text' => '1 april till 31 oktober',
+			'nasta'   => ( 10 === $manad ) ? 'I dag, 1 oktober' : '1 oktober',
+			'n_text'  => 'Sista dag att begära vinterplats',
+		);
+	}
+	return array(
+		'nu'      => 'Båtsäsong',
+		'nu_text' => '1 april till 31 oktober',
+		'nasta'   => '31 oktober',
+		'n_text'  => 'Båtar utan vinterplatsavtal ska vara upptagna',
+	);
+}
+
+add_shortcode( 'hjuviks_aktuellt', function () {
+	wp_enqueue_style( 'hjp-front' );
+	$lage = hjp_aktuellt_lage( (int) wp_date( 'n' ), (int) wp_date( 'j' ) );
+	ob_start();
+	?>
+	<div class="hjp-aktuellt">
+		<div class="hjp-akt-del">
+			<span class="hjp-akt-etikett">Just nu</span>
+			<span class="hjp-akt-rubrik"><?php echo esc_html( $lage['nu'] ); ?></span>
+			<span class="hjp-akt-text"><?php echo esc_html( $lage['nu_text'] ); ?></span>
+		</div>
+		<div class="hjp-akt-del">
+			<span class="hjp-akt-etikett">Nästa</span>
+			<span class="hjp-akt-rubrik"><?php echo esc_html( $lage['nasta'] ); ?></span>
+			<span class="hjp-akt-text"><?php echo esc_html( $lage['n_text'] ); ?></span>
+		</div>
+	</div>
+	<?php
+	return trim( ob_get_clean() );
+} );
+
+/**
  * Elementors atomära text-widgetar rensar bort tabeller och klasser ur
  * kortkoders utdata. Därför ersätts [hjuviks_prislista] i den färdiga
  * sidans HTML i stället – skriv kortkoden som vanlig text i valfri widget.
  */
 function hjp_replace_in_html( $html ) {
-	if ( ! is_string( $html ) || false === strpos( $html, '[hjuviks_prislista' ) ) {
+	if ( ! is_string( $html ) || ( false === strpos( $html, '[hjuviks_prislista' ) && false === strpos( $html, '[hjuviks_aktuellt' ) ) ) {
 		return $html;
 	}
-	return preg_replace_callback(
-		'/\[hjuviks_prislista([^\]]*)\]/',
-		function ( $m ) {
-			$attrs = html_entity_decode( $m[1], ENT_QUOTES, 'UTF-8' );
-			$attrs = str_replace( array( '”', '“', '″', '„' ), '"', $attrs );
-			$attrs = wp_strip_all_tags( $attrs );
-			return do_shortcode( '[hjuviks_prislista' . $attrs . ']' );
-		},
-		$html
-	);
+	$kor = function ( $m ) {
+		$attrs = html_entity_decode( $m[2], ENT_QUOTES, 'UTF-8' );
+		$attrs = str_replace( array( '”', '“', '″', '„' ), '"', $attrs );
+		$attrs = wp_strip_all_tags( $attrs );
+		return do_shortcode( '[' . $m[1] . $attrs . ']' );
+	};
+	// Först kortkoder som ensamma fyller ett stycke: stycket tas bort, eftersom en lista inte får ligga i en <p>.
+	$html = preg_replace_callback( '/<p[^>]*>\s*\[(hjuviks_prislista|hjuviks_aktuellt)([^\]]*)\]\s*<\/p>/', $kor, $html );
+	return preg_replace_callback( '/\[(hjuviks_prislista|hjuviks_aktuellt)([^\]]*)\]/', $kor, $html );
 }
 add_filter( 'elementor/frontend/the_content', 'hjp_replace_in_html', 20 );
 add_filter( 'the_content', 'hjp_replace_in_html', 99 );
