@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.3.2
+ * Version: 1.4.0
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.3.2' );
+define( 'HJP_VERSION', '1.4.0' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -322,6 +322,7 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 			'rubrik' => 'ja',
 			'noter'  => 'ja',
 			'stil'   => '',
+			'tema'   => '',
 		),
 		$atts,
 		'hjuviks_prislista'
@@ -423,7 +424,7 @@ function hjp_render_flikar( $data, $grupper, $atts ) {
 
 	ob_start();
 	?>
-	<div class="hjp-prislista hjp-flikar" data-moms="inkl">
+	<div class="hjp-prislista hjp-flikar<?php echo $atts['tema'] ? ' hjp-f-tema-' . esc_attr( sanitize_html_class( $atts['tema'] ) ) : ''; ?>" data-moms="inkl">
 		<div class="hjp-f-topp">
 			<div class="hjp-f-flikar" role="tablist" aria-label="Prisgrupper">
 				<?php foreach ( $grupper as $i => $grupp ) : ?>
