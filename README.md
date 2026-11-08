@@ -14,6 +14,7 @@ WordPress-tillägg för hjuviksmarina.se. Byggt av Studio Day.
 
 - `[hjuviks_prislista]` – hela listan som tabell. `grupp="Båtplatser"` visar en grupp, `rubrik="nej"` tar bort rubrikraden, `noter="nej"` tar bort noterna.
 - `[hjuviks_prislista stil="flikar"]` – en flik per grupp och ett reglage för pris med eller utan moms. Följer sidans typsnitt. Utan JavaScript visas alla grupper efter varandra.
+- `moms="bada"` (med stil="flikar") – inget reglage; pris inklusive och exklusive moms i varsin kolumn, en rad per plats.
 - `[hjuviks_aktuellt]` – rutan Just nu och Nästa, som byter innehåll efter dagens datum (säsong 1 april–31 oktober, vinterplatsavtal senast 1 oktober, vinterplats 1 november–31 mars).
 
 Kortkoderna kan skrivas som vanlig text i en Elementor-widget.

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.4.1
+ * Version: 1.5.0
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.4.1' );
+define( 'HJP_VERSION', '1.5.0' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -323,6 +323,7 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 			'noter'  => 'ja',
 			'stil'   => '',
 			'tema'   => '',
+			'moms'   => '',
 		),
 		$atts,
 		'hjuviks_prislista'
@@ -418,20 +419,29 @@ function hjp_render_flikar( $data, $grupper, $atts ) {
 	$exmoms  = ! empty( $data['visa_exmoms'] );
 	$grupper = array_values( $grupper );
 	$procent = rtrim( rtrim( number_format( $moms, 2, ',', '' ), '0' ), ',' );
+	// moms="bada": båda priserna i varsin kolumn i stället för ett reglage.
+	$bada    = ( 'bada' === $atts['moms'] || 'båda' === $atts['moms'] );
+	$klasser = 'hjp-prislista hjp-flikar';
+	if ( $atts['tema'] ) {
+		$klasser .= ' hjp-f-tema-' . sanitize_html_class( $atts['tema'] );
+	}
+	if ( $bada ) {
+		$klasser .= ' hjp-f-moms-bada' . ( $exmoms ? '' : ' hjp-f-ett-pris' );
+	}
 
 	wp_enqueue_style( 'hjp-front' );
 	wp_enqueue_script( 'hjp-flikar' );
 
 	ob_start();
 	?>
-	<div class="hjp-prislista hjp-flikar<?php echo $atts['tema'] ? ' hjp-f-tema-' . esc_attr( sanitize_html_class( $atts['tema'] ) ) : ''; ?>" data-moms="inkl">
+	<div class="<?php echo esc_attr( $klasser ); ?>" data-moms="inkl">
 		<div class="hjp-f-topp">
 			<div class="hjp-f-flikar" role="tablist" aria-label="Prisgrupper">
 				<?php foreach ( $grupper as $i => $grupp ) : ?>
 					<button type="button" class="hjp-f-flik" role="tab" id="<?php echo esc_attr( $bas . '-flik-' . $i ); ?>" aria-controls="<?php echo esc_attr( $bas . '-panel-' . $i ); ?>" aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>"<?php echo 0 === $i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $grupp['titel'] ); ?></button>
 				<?php endforeach; ?>
 			</div>
-			<?php if ( $exmoms ) : ?>
+			<?php if ( $exmoms && ! $bada ) : ?>
 				<div class="hjp-f-moms" role="group" aria-label="Visa priser">
 					<button type="button" data-hjp-moms="inkl" aria-pressed="true">Inklusive moms</button>
 					<button type="button" data-hjp-moms="exkl" aria-pressed="false">Exklusive moms</button>
@@ -444,6 +454,29 @@ function hjp_render_flikar( $data, $grupper, $atts ) {
 					<h3 class="hjp-f-grupp"><?php echo esc_html( $grupp['titel'] ); ?><?php echo $data['sasong'] ? ' ' . esc_html( $data['sasong'] ) : ''; ?></h3>
 					<span class="hjp-f-momstext" data-inkl="<?php echo esc_attr( 'Inklusive ' . $procent . ' % moms' ); ?>" data-exkl="Exklusive moms">Inklusive <?php echo esc_html( $procent ); ?>&nbsp;% moms</span>
 				</div>
+				<?php if ( $bada ) : ?>
+					<div class="hjp-f-kolumner" aria-hidden="true">
+						<span class="hjp-f-k-namn"></span>
+						<span class="hjp-f-k-period">Period</span>
+						<span class="hjp-f-k-pris">Inkl. moms</span>
+						<?php if ( $exmoms ) : ?>
+							<span class="hjp-f-k-pris">Exkl. moms</span>
+						<?php endif; ?>
+					</div>
+					<ul class="hjp-f-rader">
+						<?php foreach ( $grupp['rader'] as $row ) : ?>
+							<?php $har_pris = '' !== $row['pris']; ?>
+							<li class="hjp-f-rad">
+								<span class="hjp-f-namn"><?php echo esc_html( $row['namn'] ); ?></span>
+								<span class="hjp-f-period"><?php echo esc_html( isset( $row['period'] ) ? $row['period'] : '' ); ?></span>
+								<span class="hjp-f-pris-inkl"><?php echo $har_pris ? esc_html( hjp_format_kr( round( (float) $row['pris'] * ( 1 + $moms / 100 ) ) ) ) : 'Pris på förfrågan'; ?><span class="hjp-f-sr"> inklusive moms</span></span>
+								<?php if ( $exmoms ) : ?>
+									<span class="hjp-f-pris-exkl"><?php echo $har_pris ? esc_html( hjp_format_kr( $row['pris'] ) ) : ''; ?><?php if ( $har_pris ) : ?><span class="hjp-f-sr"> exklusive moms</span><?php endif; ?></span>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php else : ?>
 				<ul class="hjp-f-rader">
 					<?php foreach ( $grupp['rader'] as $row ) : ?>
 						<li class="hjp-f-rad">
@@ -466,6 +499,7 @@ function hjp_render_flikar( $data, $grupper, $atts ) {
 						</li>
 					<?php endforeach; ?>
 				</ul>
+				<?php endif; ?>
 			</section>
 		<?php endforeach; ?>
 		<?php
