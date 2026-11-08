@@ -433,7 +433,7 @@
 /* [hjuviks_aktuellt] – vad som gäller just nu och nästa datum. */
 .hjp-aktuellt {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
 	gap: 16px 28px;
 	padding: 22px 24px;
 	border-radius: 6px;
