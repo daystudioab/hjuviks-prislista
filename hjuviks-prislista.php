@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.3.0
+ * Version: 1.3.1
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.3.0' );
+define( 'HJP_VERSION', '1.3.1' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -546,7 +546,9 @@ function hjp_replace_in_html( $html ) {
 		$attrs = html_entity_decode( $m[2], ENT_QUOTES, 'UTF-8' );
 		$attrs = str_replace( array( '”', '“', '″', '„' ), '"', $attrs );
 		$attrs = wp_strip_all_tags( $attrs );
-		return do_shortcode( '[' . $m[1] . $attrs . ']' );
+		// Elementor kan göra mellanslaget efter kortkodens namn till ett hårt mellanslag.
+		$attrs = trim( preg_replace( '/[\s\x{00A0}]+/u', ' ', $attrs ) );
+		return do_shortcode( '[' . $m[1] . ( '' === $attrs ? '' : ' ' . $attrs ) . ']' );
 	};
 	// Först kortkoder som ensamma fyller ett stycke: stycket tas bort, eftersom en lista inte får ligga i en <p>.
 	$html = preg_replace_callback( '/<p[^>]*>\s*\[(hjuviks_prislista|hjuviks_aktuellt)([^\]]*)\]\s*<\/p>/', $kor, $html );
