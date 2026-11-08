@@ -203,6 +203,10 @@
 	font-family: var(--hjp-f-text-font);
 	color: var(--hjp-f-text);
 	line-height: 1.4;
+	/* Som rutnäts- eller flexbarn: får krympa, annars trycker den rullbara flikraden ut listan på mobil. */
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
 }
 
 .hjp-prislista.hjp-flikar.hjp-f-tema-grotesk {
