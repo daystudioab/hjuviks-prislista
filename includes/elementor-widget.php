@@ -326,10 +326,10 @@ class HJP_Elementor_Prislista extends Widget_Base {
 			array(
 				'label'      => 'Priskolumnernas bredd',
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'em', 'px' ),
+				'size_units' => array( 'px', 'rem' ),
 				'range'      => array(
-					'em' => array( 'min' => 4, 'max' => 16, 'step' => 0.5 ),
-					'px' => array( 'min' => 60, 'max' => 260 ),
+					'px'  => array( 'min' => 60, 'max' => 260 ),
+					'rem' => array( 'min' => 4, 'max' => 16, 'step' => 0.5 ),
 				),
 				'selectors'  => array( '{{WRAPPER}} .hjp-flikar' => '--hjp-f-priskol: {{SIZE}}{{UNIT}};' ),
 				'condition'  => array( 'moms' => 'bada' ),

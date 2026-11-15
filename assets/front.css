@@ -555,14 +555,14 @@
 .hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner,
 .hjp-flikar.hjp-f-moms-bada .hjp-f-rad {
 	display: grid;
-	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9em) var(--hjp-f-priskol, 9em);
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9rem) var(--hjp-f-priskol, 9rem);
 	gap: 2px var(--hjp-f-kolgap, 24px);
 	align-items: baseline;
 }
 
 .hjp-flikar.hjp-f-moms-bada.hjp-f-ett-pris .hjp-f-kolumner,
 .hjp-flikar.hjp-f-moms-bada.hjp-f-ett-pris .hjp-f-rad {
-	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9em);
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9rem);
 }
 
 .hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner {
@@ -624,8 +624,9 @@
 	margin-top: 29px;
 }
 
-/* Elementor-widgeten: flikarnas padding styrs helt från Stil › Flikar. */
+/* Elementor-widgeten: flikarnas padding och höjd styrs helt från Stil › Flikar. */
 .elementor-widget-hjuviks_prislista .hjp-flikar .hjp-f-flik {
+	min-height: 0;
 	padding: 0;
 }
 
