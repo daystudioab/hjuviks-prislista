@@ -124,6 +124,32 @@ class HJP_Elementor_Prislista extends Widget_Base {
 			)
 		);
 
+		$this->add_responsive_control(
+			'flik_justering',
+			array(
+				'label'     => 'Placering',
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => array(
+					'flex-start'  => array(
+						'title' => 'Vänster',
+						'icon'  => 'eicon-text-align-left',
+					),
+					'safe center' => array(
+						'title' => 'Mitten',
+						'icon'  => 'eicon-text-align-center',
+					),
+					'flex-end'    => array(
+						'title' => 'Höger',
+						'icon'  => 'eicon-text-align-right',
+					),
+				),
+				'default'   => 'safe center',
+				'selectors' => array(
+					'{{WRAPPER}} .hjp-f-topp'   => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} .hjp-f-flikar' => 'justify-content: {{VALUE}};',
+				),
+			)
+		);
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
@@ -249,21 +275,11 @@ class HJP_Elementor_Prislista extends Widget_Base {
 			)
 		);
 		$this->add_control(
-			'kol_linje_farg',
+			'kol_linje_info',
 			array(
-				'label'     => 'Linjens färg',
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array( '{{WRAPPER}} .hjp-f-kolumner' => 'border-bottom-color: {{VALUE}};' ),
-			)
-		);
-		$this->add_control(
-			'kol_linje_bredd',
-			array(
-				'label'      => 'Linjens tjocklek',
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
-				'range'      => array( 'px' => array( 'min' => 0, 'max' => 4, 'step' => 0.5 ) ),
-				'selectors'  => array( '{{WRAPPER}} .hjp-f-kolumner' => 'border-bottom-width: {{SIZE}}{{UNIT}}; border-bottom-style: solid;' ),
+				'type'            => Controls_Manager::RAW_HTML,
+				'raw'             => 'Linjen under rubrikerna följer linjerna mellan raderna (Stil › Rader).',
+				'content_classes' => 'elementor-descriptor',
 			)
 		);
 		$this->end_controls_section();
@@ -322,19 +338,38 @@ class HJP_Elementor_Prislista extends Widget_Base {
 		$this->add_control(
 			'rad_linje_farg',
 			array(
-				'label'     => 'Linjer mellan rader: färg',
+				'label'     => 'Linjer: färg',
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array( '{{WRAPPER}} .hjp-f-rad' => 'border-bottom-color: {{VALUE}};' ),
+				'selectors' => array( '{{WRAPPER}} .hjp-flikar' => '--hjp-f-line: {{VALUE}};' ),
 			)
 		);
 		$this->add_control(
 			'rad_linje_bredd',
 			array(
-				'label'      => 'Linjer mellan rader: tjocklek',
+				'label'      => 'Linjer: tjocklek',
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array( 'px' ),
 				'range'      => array( 'px' => array( 'min' => 0, 'max' => 4, 'step' => 0.5 ) ),
-				'selectors'  => array( '{{WRAPPER}} .hjp-f-rad' => 'border-bottom-width: {{SIZE}}{{UNIT}}; border-bottom-style: solid;' ),
+				'selectors'  => array( '{{WRAPPER}} .hjp-flikar' => '--hjp-f-line-w: {{SIZE}}{{UNIT}};' ),
+			)
+		);
+		$this->add_control(
+			'rad_hover',
+			array(
+				'label'     => 'Bakgrund vid hovring',
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} .hjp-flikar' => '--hjp-f-hover: {{VALUE}};' ),
+			)
+		);
+		$this->add_responsive_control(
+			'rad_inset',
+			array(
+				'label'       => 'Hovringsytans luft i sidled',
+				'type'        => Controls_Manager::SLIDER,
+				'size_units'  => array( 'px' ),
+				'range'       => array( 'px' => array( 'min' => 0, 'max' => 32 ) ),
+				'selectors'   => array( '{{WRAPPER}} .hjp-flikar' => '--hjp-f-rad-inset: {{SIZE}}{{UNIT}};' ),
+				'condition'   => array( 'moms' => 'bada' ),
 			)
 		);
 		$this->end_controls_section();

@@ -390,7 +390,25 @@
 	gap: 20px;
 	margin: 0;
 	padding: 16px 0;
-	border-bottom: 1px solid var(--hjp-f-line);
+	border-bottom: var(--hjp-f-line-w, 1px) solid var(--hjp-f-line);
+	transition: background-color 0.15s;
+}
+
+/* Svag grå bakgrund på raden vid hovring. Raderna sticker ut lite åt sidorna så att texten står kvar i linje. */
+.hjp-flikar.hjp-f-moms-bada .hjp-f-rader,
+.hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner {
+	margin-left: calc(-1 * var(--hjp-f-rad-inset, 12px));
+	margin-right: calc(-1 * var(--hjp-f-rad-inset, 12px));
+}
+
+.hjp-flikar.hjp-f-moms-bada .hjp-f-rad,
+.hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner {
+	padding-left: var(--hjp-f-rad-inset, 12px);
+	padding-right: var(--hjp-f-rad-inset, 12px);
+}
+
+.hjp-flikar .hjp-f-rad:hover {
+	background-color: var(--hjp-f-hover, rgba(16, 24, 32, 0.04));
 }
 
 .hjp-flikar.hjp-f-tema-grotesk .hjp-f-rad {
@@ -548,8 +566,9 @@
 }
 
 .hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner {
-	padding: 0 0 8px;
-	border-bottom: 1px solid var(--hjp-f-border);
+	padding-top: 0;
+	padding-bottom: 8px;
+	border-bottom: var(--hjp-f-line-w, 1px) solid var(--hjp-f-line);
 	font-size: 14px;
 	line-height: 1.3;
 	color: var(--hjp-f-muted);
@@ -601,7 +620,12 @@
 }
 
 .hjp-flikar.hjp-f-moms-bada .hjp-f-noter {
-	margin-top: 14px;
+	margin-top: 29px;
+}
+
+/* Elementor-widgeten: flikarnas padding styrs helt från Stil › Flikar. */
+.elementor-widget-hjuviks_prislista .hjp-flikar .hjp-f-flik {
+	padding: 0;
 }
 
 @media (max-width: 767px) {
