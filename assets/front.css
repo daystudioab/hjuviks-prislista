@@ -342,6 +342,11 @@
 	margin-top: 32px;
 }
 
+/* Med flikarna igång syns bara en panel i taget: samma avstånd till flikarna för alla. */
+.hjp-flikar.hjp-aktiv .hjp-f-panel + .hjp-f-panel {
+	margin-top: 0;
+}
+
 .hjp-flikar .hjp-f-panel[hidden] {
 	display: none;
 }
