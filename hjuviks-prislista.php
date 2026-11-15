@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.5.0' );
+define( 'HJP_VERSION', '1.6.0' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -302,6 +302,15 @@ add_action( 'admin_post_hjp_save', function () {
 } );
 
 /* -------------------------------------------------------------------------
+ * Elementor – widgeten "Hjuviks prislista" med utseendet i Stil-fliken
+ * ---------------------------------------------------------------------- */
+
+add_action( 'elementor/widgets/register', function ( $widgets_manager ) {
+	require_once __DIR__ . '/includes/elementor-widget.php';
+	$widgets_manager->register( new HJP_Elementor_Prislista() );
+} );
+
+/* -------------------------------------------------------------------------
  * Webbplats – kortkod
  * ---------------------------------------------------------------------- */
 
@@ -309,6 +318,16 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_register_style( 'hjp-front', HJP_URL . 'assets/front.css', array(), HJP_VERSION );
 	wp_register_script( 'hjp-flikar', HJP_URL . 'assets/flikar.js', array(), HJP_VERSION, true );
 } );
+
+/** Bara gruppen med namnet $grupp, eller alla grupper om $grupp är tomt. */
+function hjp_filtrera_grupper( $grupper, $grupp ) {
+	if ( '' === trim( (string) $grupp ) ) {
+		return $grupper;
+	}
+	return array_filter( $grupper, function ( $g ) use ( $grupp ) {
+		return 0 === strcasecmp( trim( $g['titel'] ), trim( $grupp ) );
+	} );
+}
 
 /**
  * [hjuviks_prislista] – hela listan.
@@ -336,11 +355,7 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 	$exmoms  = ! empty( $data['visa_exmoms'] );
 	$grupper = $data['grupper'];
 
-	if ( '' !== $atts['grupp'] ) {
-		$grupper = array_filter( $grupper, function ( $grupp ) use ( $atts ) {
-			return 0 === strcasecmp( trim( $grupp['titel'] ), trim( $atts['grupp'] ) );
-		} );
-	}
+	$grupper = hjp_filtrera_grupper( $grupper, $atts['grupp'] );
 
 	if ( 'flikar' === $atts['stil'] ) {
 		return hjp_render_flikar( $data, $grupper, $atts );
@@ -414,7 +429,7 @@ add_shortcode( 'hjuviks_prislista', function ( $atts ) {
 function hjp_render_flikar( $data, $grupper, $atts ) {
 	static $nummer = 0;
 	$nummer++;
-	$bas     = 'hjp-f' . $nummer;
+	$bas     = empty( $atts['id'] ) ? 'hjp-f' . $nummer : 'hjp-f-' . sanitize_html_class( $atts['id'] );
 	$moms    = (float) $data['moms'];
 	$exmoms  = ! empty( $data['visa_exmoms'] );
 	$grupper = array_values( $grupper );

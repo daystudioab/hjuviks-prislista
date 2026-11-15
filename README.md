@@ -27,3 +27,11 @@ Repot är publikt, så sajten hämtar releaser utan nyckel. Om repot görs priva
 ## Innehåll
 
 - `lib/plugin-update-checker/` – [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker) v5.6 (MIT), sköter uppdateringarna.
+
+
+## Elementor-widget
+
+Widgeten **Hjuviks prislista** (under Allmänt i Elementors widgetpanel) visar flikprislistan.
+Under Innehåll väljer du grupp, momsvisning och noter. Under Stil styrs utseendet för flikar,
+kolumnrubriker, rader (benämning, period, priser, radhöjd, kolumnbredd, linjer), momsreglage och noter,
+med egna värden för dator, surfplatta och mobil. Tomma reglage behåller standardutseendet.

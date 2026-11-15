@@ -79,4 +79,23 @@
 	} else {
 		allt();
 	}
+
+	// Elementor-widgeten: starta om flikarna när widgeten ritas om i redigeraren.
+	var kopplad = false;
+	function koppla() {
+		if (kopplad || !window.elementorFrontend || !window.elementorFrontend.hooks) {
+			return;
+		}
+		kopplad = true;
+		window.elementorFrontend.hooks.addAction('frontend/element_ready/hjuviks_prislista.default', function ($scope) {
+			var rot = $scope && $scope[0] ? $scope[0] : null;
+			if (rot) {
+				[].forEach.call(rot.querySelectorAll('.hjp-flikar'), starta);
+			}
+		});
+	}
+	koppla();
+	if (window.jQuery) {
+		window.jQuery(window).on('elementor/frontend/init', koppla);
+	}
 })();

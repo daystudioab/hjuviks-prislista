@@ -537,14 +537,14 @@
 .hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner,
 .hjp-flikar.hjp-f-moms-bada .hjp-f-rad {
 	display: grid;
-	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 9em 9em;
-	gap: 2px 24px;
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9em) var(--hjp-f-priskol, 9em);
+	gap: 2px var(--hjp-f-kolgap, 24px);
 	align-items: baseline;
 }
 
 .hjp-flikar.hjp-f-moms-bada.hjp-f-ett-pris .hjp-f-kolumner,
 .hjp-flikar.hjp-f-moms-bada.hjp-f-ett-pris .hjp-f-rad {
-	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 9em;
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) var(--hjp-f-priskol, 9em);
 }
 
 .hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner {
@@ -608,7 +608,7 @@
 	.hjp-flikar.hjp-f-moms-bada .hjp-f-kolumner,
 	.hjp-flikar.hjp-f-moms-bada .hjp-f-rad {
 		grid-template-columns: minmax(0, 1fr) auto auto;
-		gap: 2px 14px;
+		gap: 2px var(--hjp-f-kolgap, 14px);
 	}
 
 	.hjp-flikar.hjp-f-moms-bada.hjp-f-ett-pris .hjp-f-kolumner,
