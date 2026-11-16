@@ -1,0 +1,83 @@
+/* Hjuviks Marina – Dokument (admin) */
+.hjp-dok-lista {
+	max-width: 980px;
+	margin: 20px 0 12px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.hjp-dok-rad {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 14px;
+	border-bottom: 1px solid #f0f0f1;
+	background: #fff;
+}
+
+.hjp-dok-rad:last-child {
+	border-bottom: 0;
+}
+
+.hjp-dok-dra {
+	color: #a7aaad;
+	cursor: grab;
+	flex: 0 0 auto;
+}
+
+.hjp-dok-rad .hjp-dok-titel {
+	flex: 0 1 280px;
+	min-width: 140px;
+	font-size: 15px;
+	padding: 6px 10px;
+}
+
+.hjp-dok-fil {
+	flex: 1 1 200px;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.hjp-dok-info {
+	margin-left: 8px;
+	color: #787c82;
+}
+
+.hjp-dok-tom {
+	color: #b32d2e;
+}
+
+.hjp-dok-rensa {
+	color: #50575e;
+}
+
+.hjp-dok-tabort {
+	color: #b32d2e;
+	text-decoration: none;
+}
+
+.hjp-dok-borttagen {
+	opacity: 0.55;
+}
+
+.hjp-dok-borttagen .hjp-dok-titel {
+	text-decoration: line-through;
+}
+
+.hjp-dok-plats {
+	background: #f6f7f7;
+	border-bottom: 1px dashed #c3c4c7;
+}
+
+@media (max-width: 782px) {
+	.hjp-dok-rad {
+		flex-wrap: wrap;
+	}
+
+	.hjp-dok-rad .hjp-dok-titel {
+		flex: 1 1 100%;
+	}
+}

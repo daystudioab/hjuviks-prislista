@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.6.5
+ * Version: 1.7.0
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.6.5' );
+define( 'HJP_VERSION', '1.7.0' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -300,6 +300,8 @@ add_action( 'admin_post_hjp_save', function () {
 	wp_safe_redirect( add_query_arg( 'hjp_saved', '1', admin_url( 'admin.php?page=hjuviks-prislista' ) ) );
 	exit;
 } );
+
+require_once __DIR__ . '/includes/dokument.php';
 
 /* -------------------------------------------------------------------------
  * Elementor – widgeten "Hjuviks prislista" med utseendet i Stil-fliken

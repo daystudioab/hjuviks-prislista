@@ -35,3 +35,9 @@ Widgeten **Hjuviks prislista** (under Allmänt i Elementors widgetpanel) visar f
 Under Innehåll väljer du grupp, momsvisning och noter. Under Stil styrs utseendet för flikar,
 kolumnrubriker, rader (benämning, period, priser, radhöjd, kolumnbredd, linjer), momsreglage och noter,
 med egna värden för dator, surfplatta och mobil. Tomma reglage behåller standardutseendet.
+
+## Dokument
+
+Under menyn **Dokument** lägger du upp blanketter och dokument som besökarna kan ladda ned: en rubrik och en fil per rad. Raderna kan sorteras, och en rad utan fil visas med texten "Kommer snart".
+
+Listan visas med kortkoden `[hjuviks_dokument]` eller Elementor-widgeten **Hjuviks dokument**, där utseendet (kolumner, typsnitt, färger, linjer och ikon) styrs i Stil-fliken.
