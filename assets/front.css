@@ -821,3 +821,8 @@
 		font-size: 19px;
 	}
 }
+
+/* Widgeten fyller behållarens bredd även när behållaren centrerar sitt innehåll. */
+.elementor-widget-hjuviks_dokument {
+	width: 100%;
+}
