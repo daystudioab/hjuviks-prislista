@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hjuviks Marina – Prislista
  * Description: Enkel prislista för båtplatser, sjöbodar, parkering och avgifter. Redigera under menyn "Prislista" och visa listan med kortkoden [hjuviks_prislista] (eller [hjuviks_prislista stil="flikar"]). [hjuviks_aktuellt] visar vad som gäller i hamnen just nu.
- * Version: 1.7.1
+ * Version: 1.7.2
  * Update URI: https://github.com/daystudioab/hjuviks-prislista
  * Author: Studio Day
  * Text Domain: hjuviks-prislista
@@ -32,7 +32,7 @@ if ( defined( 'STUDIODAY_GITHUB_TOKEN' ) && STUDIODAY_GITHUB_TOKEN ) {
 	$hjp_uppdaterare->setAuthentication( STUDIODAY_GITHUB_TOKEN );
 }
 
-define( 'HJP_VERSION', '1.7.1' );
+define( 'HJP_VERSION', '1.7.2' );
 define( 'HJP_OPTION', 'hjuviks_prislista' );
 define( 'HJP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -201,10 +201,6 @@ function hjp_render_admin() {
 
 			<div class="hjp-card hjp-settings">
 				<div class="hjp-field">
-					<label for="hjp-rubrik">Rubrik</label>
-					<input type="text" id="hjp-rubrik" name="rubrik" value="<?php echo esc_attr( $data['rubrik'] ); ?>">
-				</div>
-				<div class="hjp-field">
 					<label for="hjp-sasong">Gäller för säsong</label>
 					<input type="text" id="hjp-sasong" name="sasong" value="<?php echo esc_attr( $data['sasong'] ); ?>" placeholder="T.ex. 2027">
 				</div>
@@ -286,7 +282,8 @@ add_action( 'admin_post_hjp_save', function () {
 	}
 
 	$data = array(
-		'rubrik'      => isset( $in['rubrik'] ) ? sanitize_text_field( $in['rubrik'] ) : '',
+		// Rubriken skrivs i Elementor (fältet är borttaget ur admin). [hjuviks_sasong] ger året där.
+		'rubrik'      => '',
 		'sasong'      => isset( $in['sasong'] ) ? sanitize_text_field( $in['sasong'] ) : '',
 		'moms'        => isset( $in['moms'] ) ? min( 100, max( 0, (float) $in['moms'] ) ) : 25,
 		'visa_exmoms' => empty( $in['visa_exmoms'] ) ? 0 : 1,
@@ -591,7 +588,16 @@ add_shortcode( 'hjuviks_aktuellt', function () {
  * sidans HTML i stället – skriv kortkoden som vanlig text i valfri widget.
  */
 function hjp_replace_in_html( $html ) {
-	if ( ! is_string( $html ) || ( false === strpos( $html, '[hjuviks_prislista' ) && false === strpos( $html, '[hjuviks_aktuellt' ) ) ) {
+	if ( ! is_string( $html ) ) {
+		return $html;
+	}
+	// [hjuviks_sasong] i valfri text (till exempel rubriken "Prislista [hjuviks_sasong]") blir
+	// säsongen från fältet "Gäller för säsong" i prislistans admin.
+	if ( false !== strpos( $html, '[hjuviks_sasong]' ) ) {
+		$data = hjp_get_data();
+		$html = str_replace( '[hjuviks_sasong]', esc_html( isset( $data['sasong'] ) ? $data['sasong'] : '' ), $html );
+	}
+	if ( false === strpos( $html, '[hjuviks_prislista' ) && false === strpos( $html, '[hjuviks_aktuellt' ) ) {
 		return $html;
 	}
 	$kor = function ( $m ) {
